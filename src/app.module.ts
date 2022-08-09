@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { ConfigModule } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import configuration from '../config/configuration';
 import { AppController } from './app.controller';
@@ -21,6 +22,14 @@ import { SampleModule } from './sample/sample.module';
       debug: false,
       playground: process.env.NODE_ENV !== 'production',
       autoSchemaFile: true,
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('db.uri'),
+      }),
+      connectionName: 'blog',
+      inject: [ConfigService],
     }),
     SampleModule,
   ],
