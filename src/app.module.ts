@@ -9,6 +9,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SampleResolver } from './sample/sample.resolver';
 import { SampleModule } from './sample/sample.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { SampleModule } from './sample/sample.module';
       inject: [ConfigService],
     }),
     SampleModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService, SampleResolver],
