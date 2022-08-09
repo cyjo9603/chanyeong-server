@@ -3,31 +3,30 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { User, UserSchema } from './schema/user.schema';
 import { UserService } from './user.service';
+import { UserResolver } from './user.resolver';
+import { UserRepository } from './user.repository';
 
 @Module({
   imports: [
-    MongooseModule.forFeatureAsync(
-      [
-        {
-          name: User.name,
-          useFactory: () => {
-            const schema = UserSchema;
+    MongooseModule.forFeatureAsync([
+      {
+        name: User.name,
+        useFactory: () => {
+          const schema = UserSchema;
 
-            schema.pre('save', function (next) {
-              if (this.isModified('password') || this.isNew) {
-                this.password = UserService.hashPassword(this.password);
-              }
+          schema.pre('save', function (next) {
+            if (this.isModified('password') || this.isNew) {
+              this.password = UserService.hashPassword(this.password);
+            }
 
-              next();
-            });
+            next();
+          });
 
-            return schema;
-          },
+          return schema;
         },
-      ],
-      'blog',
-    ),
+      },
+    ]),
   ],
-  providers: [UserService],
+  providers: [UserResolver, UserService, UserRepository],
 })
 export class UserModule {}

@@ -29,7 +29,6 @@ import { UserModule } from './user/user.module';
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('db.uri'),
       }),
-      connectionName: 'blog',
       inject: [ConfigService],
     }),
     SampleModule,
