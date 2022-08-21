@@ -1,5 +1,5 @@
 import { Resolver, Mutation, Context, Args } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
+import { UseGuards, UsePipes } from '@nestjs/common';
 
 import { ApolloContext } from '@/common/types/apollo-context';
 import { UserDto } from '@/user/dto/user.dto';
@@ -7,6 +7,8 @@ import { UserDto } from '@/user/dto/user.dto';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { SignInDto } from './dto/sign-in.dto';
+import { ExpiredAccessJwtAuthGuard, RefreshJwtAuthGuard } from './guards/jwt-auth.guard';
+import { RefreshValidationPipe } from './pipes/refresh.validate.pipe';
 
 @Resolver()
 export class AuthResolver {
@@ -18,6 +20,13 @@ export class AuthResolver {
     @Args('signInDto', { type: () => SignInDto }) _: SignInDto,
     @Context() { req, res }: ApolloContext,
   ): Promise<UserDto> {
+    return this.authService.signIn({ id: req.user.id }, res);
+  }
+
+  @UseGuards(ExpiredAccessJwtAuthGuard, RefreshJwtAuthGuard)
+  @UsePipes(RefreshValidationPipe)
+  @Mutation(() => UserDto)
+  async refresh(@Context() { req, res }: ApolloContext) {
     return this.authService.signIn({ id: req.user.id }, res);
   }
 }

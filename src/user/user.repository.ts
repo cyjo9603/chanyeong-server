@@ -24,4 +24,8 @@ export class UserRepository {
   async updateRefreshToken(id: string, refreshToken: string) {
     return this.userModel.findByIdAndUpdate(new ObjectId(id), { refreshToken }, { new: true });
   }
+
+  async findById(id: string) {
+    return this.userModel.findById(new ObjectId(id));
+  }
 }

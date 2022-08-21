@@ -8,10 +8,21 @@ import { UserModule } from '@/user/user.module';
 import { AuthService } from './auth.service';
 import { AuthResolver } from './auth.resolver';
 import { LocalStrategy } from './strategies/local.strategy';
-import { AccessJwtStrategy } from './strategies/jwt-auth.strategy';
+import {
+  AccessJwtStrategy,
+  ExpiredAccessJwtStrategy,
+  RefreshJwtStrategy,
+} from './strategies/jwt-auth.strategy';
 
 @Module({
-  providers: [AuthService, AuthResolver, LocalStrategy, AccessJwtStrategy],
+  providers: [
+    AuthService,
+    AuthResolver,
+    LocalStrategy,
+    AccessJwtStrategy,
+    ExpiredAccessJwtStrategy,
+    RefreshJwtStrategy,
+  ],
   imports: [
     UserModule,
     PassportModule,

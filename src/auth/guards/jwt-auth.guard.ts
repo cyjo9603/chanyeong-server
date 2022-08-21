@@ -5,9 +5,14 @@ import { ConfigService } from '@nestjs/config';
 
 import { JwtTokenType } from '../types/token';
 
-const generateJwtAuthGuard = (type: JwtTokenType): Type<IAuthGuard> => {
+interface GenerateJwtAuthGuardOptions {
+  type: JwtTokenType;
+  name?: string;
+}
+
+const generateJwtAuthGuard = ({ type, name }: GenerateJwtAuthGuardOptions): Type<IAuthGuard> => {
   @Injectable()
-  class JwtAuthGuard extends AuthGuard('jwt') {
+  class JwtAuthGuard extends AuthGuard(name || `jwt-${type}`) {
     private TOKEN_HEADER_NAME: string;
 
     constructor(private readonly configService: ConfigService) {
@@ -39,4 +44,9 @@ const generateJwtAuthGuard = (type: JwtTokenType): Type<IAuthGuard> => {
   return JwtAuthGuard;
 };
 
-export const AccessJwtAuthGuard = generateJwtAuthGuard(JwtTokenType.ACCESS);
+export const AccessJwtAuthGuard = generateJwtAuthGuard({ type: JwtTokenType.ACCESS });
+export const ExpiredAccessJwtAuthGuard = generateJwtAuthGuard({
+  type: JwtTokenType.ACCESS,
+  name: 'expired-access-jwt',
+});
+export const RefreshJwtAuthGuard = generateJwtAuthGuard({ type: JwtTokenType.REFRESH });
