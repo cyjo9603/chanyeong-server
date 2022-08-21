@@ -11,6 +11,7 @@ import { SampleResolver } from './sample/sample.resolver';
 import { SampleModule } from './sample/sample.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { AuthModule } from './auth/auth.module';
     SampleModule,
     UserModule,
     AuthModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService, SampleResolver],
