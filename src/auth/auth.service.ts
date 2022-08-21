@@ -45,27 +45,33 @@ export class AuthService {
   }
 
   async signIn(payload: UserJwtToken, res: Response) {
-    const accessToken = this.jwtService.sign(
-      { ...payload, type: JwtTokenType.ACCESS },
-      { expiresIn: this.JWT_ACCESS_EXPIRES },
-    );
-    const refreshToken = this.jwtService.sign(
-      { ...payload, type: JwtTokenType.REFRESH },
-      { expiresIn: this.JWT_REFRESH_EXPIRES },
-    );
-
-    res.cookie(this.ACCESS_TOKEN_HEADER_NAME, accessToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: this.COOKIE_MAX_AGE,
-    });
-    res.cookie(this.REFRESH_TOKEN_HEADER_NAME, refreshToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: this.COOKIE_MAX_AGE,
-    });
+    this.createAndSetToken(JwtTokenType.ACCESS, payload, res);
+    const refreshToken = this.createAndSetToken(JwtTokenType.REFRESH, payload, res);
 
     return this.userRepository.updateRefreshToken(payload.id, refreshToken);
+  }
+
+  private createAndSetToken(type: JwtTokenType, payload: UserJwtToken, res: Response) {
+    const tokenName =
+      type === JwtTokenType.ACCESS ? this.ACCESS_TOKEN_HEADER_NAME : this.REFRESH_TOKEN_HEADER_NAME;
+    const expires = JwtTokenType.ACCESS ? this.JWT_ACCESS_EXPIRES : this.JWT_REFRESH_EXPIRES;
+
+    const token = this.jwtService.sign({ ...payload, type }, { expiresIn: expires });
+    res.cookie(tokenName, token, { httpOnly: true, secure: true, maxAge: this.COOKIE_MAX_AGE });
+
+    return token;
+  }
+
+  async logout(id: string, res: Response) {
+    const user = await this.userRepository.updateRefreshToken(id, null);
+    this.clearCookieToken(res);
+
+    return user;
+  }
+
+  private clearCookieToken(res: Response) {
+    res.clearCookie(this.ACCESS_TOKEN_HEADER_NAME);
+    res.clearCookie(this.REFRESH_TOKEN_HEADER_NAME);
   }
 
   encrypt(value: string) {

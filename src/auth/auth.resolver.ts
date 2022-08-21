@@ -7,7 +7,11 @@ import { UserDto } from '@/user/dto/user.dto';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { SignInDto } from './dto/sign-in.dto';
-import { ExpiredAccessJwtAuthGuard, RefreshJwtAuthGuard } from './guards/jwt-auth.guard';
+import {
+  AccessJwtAuthGuard,
+  ExpiredAccessJwtAuthGuard,
+  RefreshJwtAuthGuard,
+} from './guards/jwt-auth.guard';
 import { RefreshValidationPipe } from './pipes/refresh.validate.pipe';
 
 @Resolver()
@@ -28,5 +32,11 @@ export class AuthResolver {
   @Mutation(() => UserDto)
   async refresh(@Context() { req, res }: ApolloContext) {
     return this.authService.signIn({ id: req.user.id }, res);
+  }
+
+  @UseGuards(AccessJwtAuthGuard)
+  @Mutation(() => UserDto)
+  async logout(@Context() { req, res }: ApolloContext) {
+    return this.authService.logout(req.user.id, res);
   }
 }
