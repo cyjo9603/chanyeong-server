@@ -7,7 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from '@/user/user.repository';
 import { UserService } from '@/user/user.service';
 
-import { UserJwtToken } from './types/token';
+import { UserJwtToken, JwtTokenType } from './types/token';
 import { Response } from 'express';
 
 @Injectable()
@@ -45,8 +45,14 @@ export class AuthService {
   }
 
   async signIn(payload: UserJwtToken, res: Response) {
-    const accessToken = this.jwtService.sign(payload, { expiresIn: this.JWT_ACCESS_EXPIRES });
-    const refreshToken = this.jwtService.sign(payload, { expiresIn: this.JWT_REFRESH_EXPIRES });
+    const accessToken = this.jwtService.sign(
+      { ...payload, type: JwtTokenType.ACCESS },
+      { expiresIn: this.JWT_ACCESS_EXPIRES },
+    );
+    const refreshToken = this.jwtService.sign(
+      { ...payload, type: JwtTokenType.REFRESH },
+      { expiresIn: this.JWT_REFRESH_EXPIRES },
+    );
 
     res.cookie(this.ACCESS_TOKEN_HEADER_NAME, accessToken, {
       httpOnly: true,
