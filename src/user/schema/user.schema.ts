@@ -1,18 +1,6 @@
-import {
-  Field,
-  ID,
-  ObjectType,
-  InputType,
-  registerEnumType,
-} from '@nestjs/graphql';
+import { Field, ID, ObjectType, InputType, registerEnumType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import {
-  MaxLength,
-  MinLength,
-  IsJWT,
-  IsAlpha,
-  IsAlphanumeric,
-} from 'class-validator';
+import { MaxLength, MinLength, IsJWT, IsAlphanumeric } from 'class-validator';
 
 export enum UserRole {
   ADMIN = 'ADMIN',

@@ -13,17 +13,12 @@ export default () => {
     readFileSync(join(__dirname, YAML_CONFIG_FILENAME), 'utf8'),
   ) as Record<string, any>;
 
-  const envConfig = yaml.load(
-    readFileSync(join(__dirname, ENV_CONFIG_FILENAME), 'utf8'),
-  ) as Record<string, any>;
-
-  const config = { env: process.env.NODE_ENV || 'development' } as Record<
+  const envConfig = yaml.load(readFileSync(join(__dirname, ENV_CONFIG_FILENAME), 'utf8')) as Record<
     string,
     any
   >;
 
-  return deepmerge.all([defaultConfig, envConfig, config]) as Record<
-    string,
-    any
-  >;
+  const config = { env: process.env.NODE_ENV || 'development' } as Record<string, any>;
+
+  return deepmerge.all([defaultConfig, envConfig, config]) as Record<string, any>;
 };

@@ -28,5 +28,6 @@ import { UserRepository } from './user.repository';
     ]),
   ],
   providers: [UserResolver, UserService, UserRepository],
+  exports: [UserService, UserRepository],
 })
 export class UserModule {}

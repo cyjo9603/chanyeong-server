@@ -2,3 +2,14 @@ port: 4000
 
 db:
   uri: 'sample'
+
+auth:
+  jwt:
+    expires:
+      access: '15m'
+      refresh: '14d'
+  cookie:
+    name:
+      access: '_cyat'
+      refresh: '_cyrt'
+    maxAge: 1_209_600_000 # 14d

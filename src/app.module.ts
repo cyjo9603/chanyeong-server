@@ -10,6 +10,7 @@ import { AppService } from './app.service';
 import { SampleResolver } from './sample/sample.resolver';
 import { SampleModule } from './sample/sample.module';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { UserModule } from './user/user.module';
       debug: false,
       playground: process.env.NODE_ENV !== 'production',
       autoSchemaFile: true,
+      context: (ctx) => ({ ...ctx }),
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -33,6 +35,7 @@ import { UserModule } from './user/user.module';
     }),
     SampleModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, SampleResolver],
