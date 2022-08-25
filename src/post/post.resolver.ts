@@ -10,8 +10,8 @@ import { AllowKeysValidationPipe } from '@/common/pipes/allow-keys.validate.pipe
 
 @Resolver(() => Post)
 export class PostResolver {
-  private static ALLOW_FILTER_KEY = ['id', 'title', 'content', 'numId', 'category', 'tags', 'pickedAt'];
-  private static ALLOW_SORT_KEY = ['id', 'numId', 'tags', 'createdAt'];
+  private static ALLOW_FILTER_KEY = ['_id', 'title', 'content', 'numId', 'category', 'tags', 'pickedAt'];
+  private static ALLOW_SORT_KEY = ['_id', 'numId', 'tags', 'createdAt'];
   constructor(private readonly postRepository: PostRepository) {}
 
   @Directive('@filterConvert')
@@ -33,5 +33,14 @@ export class PostResolver {
       edges: posts.map((node) => ({ node })),
       totalCount,
     };
+  }
+
+  @Directive('@filterConvert')
+  @Query(() => Post)
+  async post(
+    @Args('filterBy', { type: () => [InputFilter], nullable: true }, AllowKeysValidationPipe(PostResolver.ALLOW_FILTER_KEY))
+    filterBy?: FilterQuery<PostDocument>,
+  ) {
+    return this.postRepository.findOne(filterBy);
   }
 }

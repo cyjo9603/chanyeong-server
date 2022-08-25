@@ -17,6 +17,10 @@ export class PostRepository {
     return this.postModel.find(filterBy).sort(sort).skip(skip).limit(limit).exec();
   }
 
+  async findOne(filterBy: FindOptions<PostDocument>['filterBy']) {
+    return this.postModel.findOne(filterBy);
+  }
+
   async getCount(filterBy: FindOptions<PostDocument>['filterBy']) {
     return this.postModel.countDocuments(filterBy);
   }
