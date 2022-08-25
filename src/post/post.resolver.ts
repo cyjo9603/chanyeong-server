@@ -1,4 +1,37 @@
-import { Resolver } from '@nestjs/graphql';
+import { Resolver, Query, Args, Int, Directive } from '@nestjs/graphql';
+import { FilterQuery, SortOrder } from 'mongoose';
 
-@Resolver()
-export class PostResolver {}
+import { InputFilter } from '@/common/schema/filter-graphql.schema';
+import { InputSort } from '@/common/schema/sort-graphql.schema';
+
+import { Post, PostConnection, PostDocument } from './schema/post.schema';
+import { PostRepository } from './post.repository';
+import { AllowKeysValidationPipe } from '@/common/pipes/allow-keys.validate.pipe';
+
+@Resolver(() => Post)
+export class PostResolver {
+  private static ALLOW_FILTER_KEY = ['id', 'title', 'content', 'numId', 'category', 'tags', 'pickedAt'];
+  private static ALLOW_SORT_KEY = ['id', 'numId', 'tags', 'createdAt'];
+  constructor(private readonly postRepository: PostRepository) {}
+
+  @Directive('@filterConvert')
+  @Directive('@sortConvert')
+  @Query(() => PostConnection)
+  async posts(
+    @Args('filterBy', { type: () => [InputFilter], nullable: true }, AllowKeysValidationPipe(PostResolver.ALLOW_FILTER_KEY))
+    filterBy?: FilterQuery<PostDocument>,
+    @Args('skip', { type: () => Int, nullable: true }) skip?: number,
+    @Args('limit', { type: () => Int, nullable: true }) limit?: number,
+    @Args('sort', { type: () => [InputSort], nullable: true }, AllowKeysValidationPipe(PostResolver.ALLOW_SORT_KEY))
+    sort?: { [key: string]: SortOrder },
+  ): Promise<PostConnection> {
+    const posts = await this.postRepository.find({ filterBy, skip, limit, sort });
+    const totalCount = await this.postRepository.getCount(filterBy);
+
+    return {
+      pageInfo: { hasNext: totalCount - limit - skip > 0 },
+      edges: posts.map((node) => ({ node })),
+      totalCount,
+    };
+  }
+}

@@ -44,22 +44,6 @@
     ora "5.4.1"
     rxjs "6.6.7"
 
-"@apollo/core-schema@~0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@apollo/core-schema/-/core-schema-0.3.0.tgz#c6c1a6821fb326501d73eb85d920bbf57906cc77"
-  integrity sha512-v+Ys6+W1pDQu+XwP++tI5y4oZdzKrEuVXwsEenOmg2FO/3/G08C+qMhQ9YQ9Ug34rvQGQtgbIDssHEVk4YZS7g==
-  dependencies:
-    "@protoplasm/recall" "^0.2"
-
-"@apollo/federation-internals@^2.0.0":
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/@apollo/federation-internals/-/federation-internals-2.0.5.tgz#a96d6d73247e9a3deac6851937c6b8bcc632ced4"
-  integrity sha512-UbkNNOtzp1N14ZR6ynjwctF6rXEvAnlDz527cUYN0mkYkyH8v0RZNA1WfhVdcPWsTpjuvAR7Q5cDEf3e2dYcEQ==
-  dependencies:
-    "@apollo/core-schema" "~0.3.0"
-    chalk "^4.1.0"
-    js-levenshtein "^1.1.6"
-
 "@apollo/protobufjs@1.2.4":
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/@apollo/protobufjs/-/protobufjs-1.2.4.tgz#d913e7627210ec5efd758ceeb751c776c68ba133"
@@ -78,13 +62,6 @@
     "@types/long" "^4.0.0"
     "@types/node" "^10.1.0"
     long "^4.0.0"
-
-"@apollo/subgraph@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@apollo/subgraph/-/subgraph-2.0.0.tgz#de677b61a016784c8b87607c5935ecdaec8315d2"
-  integrity sha512-1MrNTA0caqZyl0xORLLr+T1YrCDlEVqNZpA0XyvICxnx8hRgwVLI5NJV8xl5QAZzMjiAuaFrNBjYpjbkCHtAgQ==
-  dependencies:
-    "@apollo/federation-internals" "^2.0.0"
 
 "@apollo/utils.dropunuseddefinitions@^1.1.0":
   version "1.1.0"
@@ -1092,11 +1069,6 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
-
-"@protoplasm/recall@^0.2":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@protoplasm/recall/-/recall-0.2.4.tgz#d7b1a5f1e94481d015e9666bd791e57d51b8cc67"
-  integrity sha512-+w5WCHQwuZ0RZ3+ayJ42ArGPIeew2Wxb+g1rPNA+qiehCc4EDTDjW7DyPPq9FBa4lFUDC4mgDytV8Fkxe/Z3iQ==
 
 "@sinclair/typebox@^0.24.1":
   version "0.24.27"
@@ -3254,6 +3226,11 @@ graphql-tag@2.12.6, graphql-tag@^2.11.0:
   dependencies:
     tslib "^2.1.0"
 
+graphql-type-json@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/graphql-type-json/-/graphql-type-json-0.3.2.tgz#f53a851dbfe07bd1c8157d24150064baab41e115"
+  integrity sha512-J+vjof74oMlCWXSvt0DOf2APEdZOCdubEvGDUAlqH//VBYcOYsGgRW7Xzorr44LvkjiuvecWc8fChxuZZbChtg==
+
 graphql-ws@5.5.5:
   version "5.5.5"
   resolved "https://registry.yarnpkg.com/graphql-ws/-/graphql-ws-5.5.5.tgz#f375486d3f196e2a2527b503644693ae3a8670a9"
@@ -3925,11 +3902,6 @@ jest@28.1.2:
     "@jest/types" "^28.1.1"
     import-local "^3.0.2"
     jest-cli "^28.1.2"
-
-js-levenshtein@^1.1.6:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/js-levenshtein/-/js-levenshtein-1.1.6.tgz#c6cee58eb3550372df8deb85fad5ce66ce01d59d"
-  integrity sha512-X2BB11YZtrRqY4EnQcLX5Rh373zbK4alC1FW7D7MBhL2gtcC17cTnr6DmfHZeS0s2rTHjUTMMHfG7gO8SSdw+g==
 
 js-tokens@^4.0.0:
   version "4.0.0"

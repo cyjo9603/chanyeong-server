@@ -40,6 +40,7 @@
     "crypto-js": "^4.1.1",
     "deepmerge": "^4.2.2",
     "graphql": "^16.5.0",
+    "graphql-type-json": "^0.3.2",
     "helmet": "^5.1.1",
     "hpp": "^0.2.3",
     "js-yaml": "^4.1.0",
