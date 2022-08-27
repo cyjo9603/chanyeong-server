@@ -1,4 +1,4 @@
-import { Resolver, Query, Args, Int, Directive, Mutation } from '@nestjs/graphql';
+import { Resolver, Query, Args, Int, Directive, Mutation, ID } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { FilterQuery, SortOrder } from 'mongoose';
 
@@ -56,7 +56,13 @@ export class PostResolver {
 
   @UseGuards(AccessJwtAuthGuard)
   @Mutation(() => Post)
-  async updatePost(@Args('updatePostDto') { id, ...updatePostDto }: UpdatePostDto) {
+  async updatePost(@Args('id', { type: () => ID }) id: string, @Args('updatePostDto') updatePostDto: UpdatePostDto) {
     return this.postRepository.updateOneById(id, updatePostDto);
+  }
+
+  @UseGuards(AccessJwtAuthGuard)
+  @Mutation(() => Post)
+  async deletePost(@Args('id', { type: () => ID }) id: string) {
+    return this.postRepository.deleteOneById(id);
   }
 }

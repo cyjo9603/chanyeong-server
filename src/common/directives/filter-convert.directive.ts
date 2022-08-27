@@ -25,7 +25,7 @@ export function filterConvertDirectiveTransformer(schema: GraphQLSchema, directi
   });
 }
 
-export async function convertFilters(filters?: InputFilter[]) {
+export function convertFilters(filters?: InputFilter[]) {
   return filters?.reduce(
     (filterBy, filter) => ({
       ...filterBy,

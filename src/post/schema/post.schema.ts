@@ -61,6 +61,10 @@ export class Post {
 
   @Field(() => DateTimeScalar)
   updatedAt!: Date;
+
+  @Field(() => DateTimeScalar, { nullable: true })
+  @Prop({})
+  deletedAt!: Date;
 }
 
 @ObjectType()
