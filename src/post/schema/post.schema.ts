@@ -4,6 +4,7 @@ import { MaxLength, IsUrl, IsOptional } from 'class-validator';
 import { Document } from 'mongoose';
 
 import { connectionGenerator } from '@/common/schema/connection.schema';
+import { DateTimeScalar } from '@/common/scalars/date-time.scalar';
 
 export enum PostCategory {
   DIARY = 'DIARY',
@@ -51,14 +52,14 @@ export class Post {
   @Prop({ index: true })
   tags: string[];
 
-  @Field(() => Date, { nullable: true })
+  @Field(() => DateTimeScalar, { nullable: true })
   @Prop({})
   pickedAt!: Date;
 
-  @Field(() => Date)
+  @Field(() => DateTimeScalar)
   createdAt!: Date;
 
-  @Field(() => Date)
+  @Field(() => DateTimeScalar)
   updatedAt!: Date;
 }
 

@@ -15,6 +15,7 @@ import { SampleModule } from './sample/sample.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { PostModule } from './post/post.module';
+import { CommonModule } from './common/common.module';
 import { DirectiveLocation, GraphQLDirective } from 'graphql';
 
 @Module({
@@ -47,6 +48,11 @@ import { DirectiveLocation, GraphQLDirective } from 'graphql';
           }),
         ],
       },
+      definitions: {
+        customScalarTypeMapping: {
+          DateTime: 'Date',
+        },
+      },
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -56,6 +62,7 @@ import { DirectiveLocation, GraphQLDirective } from 'graphql';
       inject: [ConfigService],
     }),
     SampleModule,
+    CommonModule,
     UserModule,
     AuthModule,
     PostModule,

@@ -10,6 +10,7 @@ import { AccessJwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { Post, PostConnection, PostDocument } from './schema/post.schema';
 import { PostRepository } from './post.repository';
 import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 @Resolver(() => Post)
 export class PostResolver {
@@ -51,5 +52,11 @@ export class PostResolver {
   @Mutation(() => Post)
   async createPost(@Args('createPostDto') createPostDto: CreatePostDto) {
     return this.postRepository.create(createPostDto);
+  }
+
+  @UseGuards(AccessJwtAuthGuard)
+  @Mutation(() => Post)
+  async updatePost(@Args('updatePostDto') { id, ...updatePostDto }: UpdatePostDto) {
+    return this.postRepository.updateOneById(id, updatePostDto);
   }
 }
