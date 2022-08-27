@@ -14,12 +14,7 @@ export function filterConvertDirectiveTransformer(schema: GraphQLSchema, directi
 
         // Replace the original resolver with a function that *first* calls
         // the original resolver, then converts its result to upper case
-        fieldConfig.resolve = async function (
-          source,
-          { filterBy: _filterBy, ...restArgs },
-          context,
-          info,
-        ) {
+        fieldConfig.resolve = async function (source, { filterBy: _filterBy, ...restArgs }, context, info) {
           const filterBy = convertFilters(_filterBy);
 
           return resolve(source, { ...restArgs, filterBy }, context, info);

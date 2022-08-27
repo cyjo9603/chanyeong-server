@@ -52,8 +52,7 @@ export class AuthService {
   }
 
   private createAndSetToken(type: JwtTokenType, payload: UserJwtToken, res: Response) {
-    const tokenName =
-      type === JwtTokenType.ACCESS ? this.ACCESS_TOKEN_HEADER_NAME : this.REFRESH_TOKEN_HEADER_NAME;
+    const tokenName = type === JwtTokenType.ACCESS ? this.ACCESS_TOKEN_HEADER_NAME : this.REFRESH_TOKEN_HEADER_NAME;
     const expires = JwtTokenType.ACCESS ? this.JWT_ACCESS_EXPIRES : this.JWT_REFRESH_EXPIRES;
 
     const token = this.jwtService.sign({ ...payload, type }, { expiresIn: expires });

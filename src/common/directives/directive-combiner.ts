@@ -6,8 +6,5 @@ interface Directive {
 }
 
 export const directiveCombiner = (schema: GraphQLSchema, directives: Directive[]) => {
-  return directives.reduce<GraphQLSchema>(
-    (currentSchema, { transformer, name }) => transformer(currentSchema, name),
-    schema,
-  );
+  return directives.reduce<GraphQLSchema>((currentSchema, { transformer, name }) => transformer(currentSchema, name), schema);
 };

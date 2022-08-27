@@ -11,11 +11,7 @@ interface GenerateJwtStrategyOptions {
   strategyOptions?: Omit<StrategyOptions, 'jwtFromRequest' | 'secretOrKey'>;
 }
 
-const generateJwtStrategy = ({
-  type,
-  name,
-  strategyOptions = {},
-}: GenerateJwtStrategyOptions): Type<Strategy> => {
+const generateJwtStrategy = ({ type, name, strategyOptions = {} }: GenerateJwtStrategyOptions): Type<Strategy> => {
   @Injectable()
   class JwtStrategy extends PassportStrategy(Strategy, name || `jwt-${type}`) {
     constructor(private readonly configService: ConfigService) {
