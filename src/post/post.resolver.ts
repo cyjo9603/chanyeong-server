@@ -1,12 +1,15 @@
-import { Resolver, Query, Args, Int, Directive } from '@nestjs/graphql';
+import { Resolver, Query, Args, Int, Directive, Mutation } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
 import { FilterQuery, SortOrder } from 'mongoose';
 
 import { InputFilter } from '@/common/schema/filter-graphql.schema';
 import { InputSort } from '@/common/schema/sort-graphql.schema';
+import { AllowKeysValidationPipe } from '@/common/pipes/allow-keys.validate.pipe';
+import { AccessJwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 
 import { Post, PostConnection, PostDocument } from './schema/post.schema';
 import { PostRepository } from './post.repository';
-import { AllowKeysValidationPipe } from '@/common/pipes/allow-keys.validate.pipe';
+import { CreatePostDto } from './dto/create-post.dto';
 
 @Resolver(() => Post)
 export class PostResolver {
@@ -42,5 +45,11 @@ export class PostResolver {
     filterBy?: FilterQuery<PostDocument>,
   ) {
     return this.postRepository.findOne(filterBy);
+  }
+
+  @UseGuards(AccessJwtAuthGuard)
+  @Mutation(() => Post)
+  async createPost(@Args('createPostDto') createPostDto: CreatePostDto) {
+    return this.postRepository.create(createPostDto);
   }
 }

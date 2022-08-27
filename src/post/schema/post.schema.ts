@@ -1,6 +1,6 @@
 import { Field, ID, Int, ObjectType, InputType, registerEnumType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { MaxLength, IsUrl } from 'class-validator';
+import { MaxLength, IsUrl, IsOptional } from 'class-validator';
 import { Document } from 'mongoose';
 
 import { connectionGenerator } from '@/common/schema/connection.schema';
@@ -26,7 +26,7 @@ export class Post {
   category: PostCategory;
 
   @Field(() => Int)
-  @Prop({ required: true, index: true })
+  @Prop({ index: true })
   numId: number;
 
   @MaxLength(50)
@@ -40,11 +40,13 @@ export class Post {
 
   @MaxLength(200)
   @IsUrl()
+  @IsOptional()
   @Field(() => String, { nullable: true })
   @Prop({})
-  titleImage: string;
+  titleImage?: string;
 
   @MaxLength(20, { each: true })
+  @IsOptional()
   @Field(() => [String], { nullable: true })
   @Prop({ index: true })
   tags: string[];
@@ -55,6 +57,9 @@ export class Post {
 
   @Field(() => Date)
   createdAt!: Date;
+
+  @Field(() => Date)
+  updatedAt!: Date;
 }
 
 @ObjectType()
