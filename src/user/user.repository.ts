@@ -3,18 +3,18 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ObjectId } from 'mongodb';
 
+import { MongooseCommonRepository } from '@/common/repository/mongoose-common.repository';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { User, UserDocument } from './schema/user.schema';
 
 @Injectable()
-export class UserRepository {
+export class UserRepository extends MongooseCommonRepository<UserDocument, CreateUserDto> {
   constructor(
     @InjectModel(User.name)
     private readonly userModel: Model<UserDocument>,
-  ) {}
-
-  async create(createUserInput: CreateUserDto): Promise<UserDocument> {
-    return this.userModel.create(createUserInput);
+  ) {
+    super(userModel);
   }
 
   async findOneByUserId(userId: string) {
@@ -23,9 +23,5 @@ export class UserRepository {
 
   async updateRefreshToken(id: string, refreshToken: string | null) {
     return this.userModel.findByIdAndUpdate(new ObjectId(id), { refreshToken }, { new: true });
-  }
-
-  async findById(id: string) {
-    return this.userModel.findById(new ObjectId(id));
   }
 }
