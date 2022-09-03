@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@nestjs/apollo": "^10.0.19",
+    "@nestjs/axios": "^0.1.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
@@ -41,6 +42,7 @@
     "deepmerge": "^4.2.2",
     "graphql": "^16.5.0",
     "graphql-type-json": "^0.3.2",
+    "graphql-upload": "^13.0.0",
     "helmet": "^5.1.1",
     "hpp": "^0.2.3",
     "js-yaml": "^4.1.0",

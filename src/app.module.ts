@@ -18,6 +18,7 @@ import { AuthModule } from './auth/auth.module';
 import { PostModule } from './post/post.module';
 import { CommonModule } from './common/common.module';
 import { TechStackModule } from './tech-stack/tech-stack.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -68,6 +69,7 @@ import { TechStackModule } from './tech-stack/tech-stack.module';
     AuthModule,
     PostModule,
     TechStackModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService, SampleResolver],

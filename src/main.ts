@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import * as compression from 'compression';
 import hpp from 'hpp';
 import * as cookieParser from 'cookie-parser';
+import { graphqlUploadExpress } from 'graphql-upload';
 
 import { AppModule } from './app.module';
 
@@ -16,6 +17,12 @@ async function bootstrap() {
 
   app.use(cookieParser());
   app.use(compression());
+  app.use(
+    graphqlUploadExpress({
+      maxFileSize: configService.get('upload.maxSize'),
+      maxFiles: configService.get('upload.maxFiles'),
+    }),
+  );
   if (env === 'production') {
     app.use(hpp());
     app.use(helmet());

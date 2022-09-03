@@ -13,3 +13,10 @@ auth:
       access: '_cyat'
       refresh: '_cyrt'
     maxAge: 1_209_600_000 # 14d
+
+upload:
+  maxSize: 1_048_576 # 10mb
+  maxFiles: 1
+  path:
+    upload: '/image/v2.0/appkeys/{appKey}/images'
+  allowNamespaces: ["skill", "post"]
