@@ -3,6 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { DirectiveLocation, GraphQLDirective } from 'graphql';
 
 import configuration from '../config/configuration';
 import { directiveCombiner } from './common/directives/directive-combiner';
@@ -16,7 +17,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { PostModule } from './post/post.module';
 import { CommonModule } from './common/common.module';
-import { DirectiveLocation, GraphQLDirective } from 'graphql';
+import { TechStackModule } from './tech-stack/tech-stack.module';
 
 @Module({
   imports: [
@@ -66,6 +67,7 @@ import { DirectiveLocation, GraphQLDirective } from 'graphql';
     UserModule,
     AuthModule,
     PostModule,
+    TechStackModule,
   ],
   controllers: [AppController],
   providers: [AppService, SampleResolver],
