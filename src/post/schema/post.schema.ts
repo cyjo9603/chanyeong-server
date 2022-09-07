@@ -53,7 +53,7 @@ export class Post {
   tags: string[];
 
   @Field(() => DateTimeScalar, { nullable: true })
-  @Prop({})
+  @Prop({ index: true })
   pickedAt!: Date;
 
   @Field(() => DateTimeScalar)

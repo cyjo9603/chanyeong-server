@@ -15,7 +15,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 @Resolver(() => Post)
 export class PostResolver {
   private static ALLOW_FILTER_KEY = ['_id', 'title', 'content', 'numId', 'category', 'tags', 'pickedAt'];
-  private static ALLOW_SORT_KEY = ['_id', 'numId', 'tags', 'createdAt'];
+  private static ALLOW_SORT_KEY = ['_id', 'numId', 'tags', 'createdAt', 'pickedAt'];
   constructor(private readonly postRepository: PostRepository) {}
 
   @Directive('@filterConvert')
