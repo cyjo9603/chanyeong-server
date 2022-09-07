@@ -21,6 +21,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@fxts/core": "^0.9.0",
     "@nestjs/apollo": "^10.0.19",
     "@nestjs/axios": "^0.1.0",
     "@nestjs/common": "^9.0.0",
@@ -39,6 +40,7 @@
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "crypto-js": "^4.1.1",
+    "dataloader": "^2.1.0",
     "deepmerge": "^4.2.2",
     "graphql": "^16.5.0",
     "graphql-type-json": "^0.3.2",

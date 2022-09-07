@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { MongooseModule, getConnectionToken } from '@nestjs/mongoose';
 import * as AutoIncrementFactory from 'mongoose-sequence';
 
+import { TechStackModule } from '@/tech-stack/tech-stack.module';
+
 import { Project, ProjectSchema } from './schema/project.schema';
 import { ProjectResolver } from './project.resolver';
 import { ProjectRepository } from './project.repository';
@@ -23,6 +25,7 @@ import { ProjectService } from './project.service';
         inject: [getConnectionToken()],
       },
     ]),
+    TechStackModule,
   ],
   providers: [ProjectResolver, ProjectRepository, ProjectService],
 })

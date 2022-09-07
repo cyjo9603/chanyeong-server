@@ -33,7 +33,7 @@ import { ProjectModule } from './project/project.module';
       debug: false,
       playground: process.env.NODE_ENV !== 'production',
       autoSchemaFile: true,
-      context: (ctx) => ({ ...ctx }),
+      context: (ctx) => ({ ...ctx, dataloaders: {} }),
       transformSchema: (schema) =>
         directiveCombiner(schema, [
           { name: 'filterConvert', transformer: filterConvertDirectiveTransformer },

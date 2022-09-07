@@ -9,5 +9,6 @@ import { TechStackRepository } from './tech-stack.repository';
 @Module({
   imports: [MongooseModule.forFeature([{ name: TechStack.name, schema: TechStackSchema }])],
   providers: [TechStackResolver, TechStackService, TechStackRepository],
+  exports: [TechStackRepository],
 })
 export class TechStackModule {}

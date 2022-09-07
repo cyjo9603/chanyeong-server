@@ -1,18 +1,22 @@
-import { Resolver, Query, Directive, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Directive, Args, Int, ResolveField, Parent, Context } from '@nestjs/graphql';
 import { FilterQuery } from 'mongoose';
 
 import { InputFilter } from '@/common/schema/filter-graphql.schema';
 import { InputSort, GraphqlSort } from '@/common/schema/sort-graphql.schema';
 import { AllowKeysValidationPipe } from '@/common/pipes/allow-keys.validate.pipe';
+import { ApolloContext } from '@/common/types/apollo-context';
+import { TechStack } from '@/tech-stack/schema/tech-stack.schema';
+import { getDataLoader } from '@/common/dataloader/dataloader';
+import { TechStackRepository } from '@/tech-stack/tech-stack.repository';
 
 import { ProjectRepository } from './project.repository';
-import { ProjectConnection, ProjectDocument } from './schema/project.schema';
+import { Project, ProjectConnection, ProjectDocument } from './schema/project.schema';
 
-@Resolver()
+@Resolver(() => Project)
 export class ProjectResolver {
   private static ALLOW_FILTER_KEY = ['_id', 'type', 'groupName', 'title', 'content', 'numId', 'pickedAt'];
   private static ALLOW_SORT_KEY = ['_id', 'numId', 'startedAt', 'endedAt', 'pickedAt', 'createdAt'];
-  constructor(private readonly projectRepository: ProjectRepository) {}
+  constructor(private readonly projectRepository: ProjectRepository, private readonly techStackRepository: TechStackRepository) {}
 
   @Directive('@filterConvert')
   @Directive('@sortConvert')
@@ -33,5 +37,10 @@ export class ProjectResolver {
       edges: projects.map((node) => ({ node })),
       totalCount,
     };
+  }
+
+  @ResolveField(() => [TechStack], { nullable: true })
+  techStack(@Parent() { techStackIds }: Project, @Context() { dataloaders }: ApolloContext) {
+    return techStackIds ? getDataLoader(dataloaders, this.techStackRepository).loadMany(techStackIds.map((id) => id.toString())) : null;
   }
 }
