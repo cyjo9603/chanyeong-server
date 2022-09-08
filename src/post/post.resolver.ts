@@ -13,6 +13,7 @@ import { Post, PostConnection, PostDocument } from './schema/post.schema';
 import { PostRepository } from './post.repository';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { TagWithCount } from './dto/tag-with-count.dto';
 
 @Resolver(() => Post)
 export class PostResolver {
@@ -48,6 +49,11 @@ export class PostResolver {
     filterBy?: FilterQuery<PostDocument>,
   ) {
     return this.postRepository.findOne(filterBy);
+  }
+
+  @Query(() => [TagWithCount])
+  async tags() {
+    return this.postRepository.findAllTagsWithCount();
   }
 
   @UseGuards(AccessJwtAuthGuard)

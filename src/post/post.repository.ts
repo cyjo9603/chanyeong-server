@@ -16,4 +16,15 @@ export class PostRepository extends MongooseCommonRepository<PostDocument, Creat
   ) {
     super(postModel);
   }
+
+  async findAllTagsWithCount() {
+    return this.postModel.aggregate([
+      { $match: { tags: { $exists: true } } },
+      { $project: { _id: 0, tags: 1 } },
+      { $unwind: '$tags' },
+      { $group: { _id: '$tags', count: { $sum: 1 } } },
+      { $project: { _id: 0, name: '$_id', count: 1 } },
+      { $sort: { count: -1 } },
+    ]);
+  }
 }
