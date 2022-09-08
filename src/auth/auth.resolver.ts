@@ -17,14 +17,14 @@ export class AuthResolver {
   @UseGuards(LocalAuthGuard)
   @Mutation(() => UserDto)
   async signIn(@Args('signInDto', { type: () => SignInDto }) _: SignInDto, @Context() { req, res }: ApolloContext): Promise<UserDto> {
-    return this.authService.signIn({ id: req.user.id }, res);
+    return this.authService.signIn({ id: req.user.id.toHexString() }, res);
   }
 
   @UseGuards(ExpiredAccessJwtAuthGuard, RefreshJwtAuthGuard)
   @UsePipes(RefreshValidationPipe)
   @Mutation(() => UserDto)
   async refresh(@Context() { req, res }: ApolloContext) {
-    return this.authService.signIn({ id: req.user.id }, res);
+    return this.authService.signIn({ id: req.user.id.toHexString() }, res);
   }
 
   @UseGuards(AccessJwtAuthGuard)

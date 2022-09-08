@@ -1,10 +1,12 @@
-import { Field, ID, Int, ObjectType, InputType, registerEnumType } from '@nestjs/graphql';
+import { Field, Int, ObjectType, InputType, registerEnumType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { MaxLength, IsUrl } from 'class-validator';
 import { Document } from 'mongoose';
+import { ObjectId } from 'mongodb';
 
 import { connectionGenerator } from '@/common/schema/connection.schema';
 import { DateTimeScalar } from '@/common/scalars/date-time.scalar';
+import { ObjectIdScalar } from '@/common/scalars/mongo-object-id.scalar';
 
 export enum TechStackCategory {
   FRONT_END = 'FRONT_END',
@@ -20,8 +22,8 @@ export type TechStackDocument = TechStack & Document;
 @ObjectType()
 @Schema({ timestamps: true })
 export class TechStack {
-  @Field(() => ID)
-  id: string;
+  @Field(() => ObjectIdScalar)
+  id: ObjectId;
 
   @Field(() => TechStackCategory)
   @Prop({

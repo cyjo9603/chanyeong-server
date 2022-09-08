@@ -1,7 +1,10 @@
-import { Field, ID, ObjectType, InputType, registerEnumType } from '@nestjs/graphql';
+import { Field, ObjectType, InputType, registerEnumType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { MaxLength, MinLength, IsJWT, IsAlphanumeric } from 'class-validator';
 import { Document } from 'mongoose';
+import { ObjectId } from 'mongodb';
+
+import { ObjectIdScalar } from '@/common/scalars/mongo-object-id.scalar';
 
 export enum UserRole {
   ADMIN = 'ADMIN',
@@ -15,8 +18,8 @@ registerEnumType(UserRole, { name: 'UserRole' });
 @ObjectType()
 @Schema()
 export class User {
-  @Field(() => ID)
-  id: string;
+  @Field(() => ObjectIdScalar)
+  id: ObjectId;
 
   @Field(() => UserRole)
   @Prop({

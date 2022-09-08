@@ -14,12 +14,12 @@ export abstract class MongooseCommonRepository<Document extends MongooseDocument
     return this.model.create(createPostDto);
   }
 
-  async updateOneById(id: string, updatePostDto: UpdateDto): Promise<Document> {
-    return this.model.findByIdAndUpdate(new ObjectId(id), updatePostDto, { new: true });
+  async updateOneById(id: ObjectId, updatePostDto: UpdateDto): Promise<Document> {
+    return this.model.findByIdAndUpdate(id, updatePostDto, { new: true });
   }
 
-  async deleteOneById(id: string): Promise<Document> {
-    return this.model.findByIdAndUpdate(new ObjectId(id), { deletedAt: new Date() }, { new: true });
+  async deleteOneById(id: ObjectId): Promise<Document> {
+    return this.model.findByIdAndUpdate(id, { deletedAt: new Date() }, { new: true });
   }
 
   async find({ filterBy, sort = { _id: -1 }, limit = 10, skip = 0 }: FindOptions<Document>) {
@@ -35,8 +35,8 @@ export abstract class MongooseCommonRepository<Document extends MongooseDocument
     return this.model.findOne({ ...this.DELETED_FILTER, ...filterBy });
   }
 
-  async findById(id: string) {
-    return this.model.findById(new ObjectId(id));
+  async findById(id: ObjectId) {
+    return this.model.findById(id);
   }
 
   async getCount(filterBy: FindOptions<Document>['filterBy']) {

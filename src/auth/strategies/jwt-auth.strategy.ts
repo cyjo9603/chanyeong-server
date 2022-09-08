@@ -2,6 +2,7 @@ import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException, Type } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ObjectId } from 'mongodb';
 
 import { UserJwtToken, JwtTokenType } from '../types/token';
 
@@ -27,7 +28,7 @@ const generateJwtStrategy = ({ type, name, strategyOptions = {} }: GenerateJwtSt
         throw new UnauthorizedException();
       }
 
-      return { id: payload.id };
+      return { id: new ObjectId(payload.id) };
     }
   }
 

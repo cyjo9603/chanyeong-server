@@ -3,6 +3,7 @@ import AES from 'crypto-js/aes';
 import UTF8 from 'crypto-js/enc-utf8';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { ObjectId } from 'mongodb';
 
 import { UserRepository } from '@/user/user.repository';
 import { UserService } from '@/user/user.service';
@@ -48,7 +49,7 @@ export class AuthService {
     this.createAndSetToken(JwtTokenType.ACCESS, payload, res);
     const refreshToken = this.createAndSetToken(JwtTokenType.REFRESH, payload, res);
 
-    return this.userRepository.updateRefreshToken(payload.id, refreshToken);
+    return this.userRepository.updateRefreshToken(new ObjectId(payload.id), refreshToken);
   }
 
   private createAndSetToken(type: JwtTokenType, payload: UserJwtToken, res: Response) {
@@ -61,7 +62,7 @@ export class AuthService {
     return token;
   }
 
-  async logout(id: string, res: Response) {
+  async logout(id: ObjectId, res: Response) {
     const user = await this.userRepository.updateRefreshToken(id, null);
     this.clearCookieToken(res);
 

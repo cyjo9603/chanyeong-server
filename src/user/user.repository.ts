@@ -21,7 +21,7 @@ export class UserRepository extends MongooseCommonRepository<UserDocument, Creat
     return this.userModel.findOne({ userId });
   }
 
-  async updateRefreshToken(id: string, refreshToken: string | null) {
-    return this.userModel.findByIdAndUpdate(new ObjectId(id), { refreshToken }, { new: true });
+  async updateRefreshToken(id: ObjectId, refreshToken: string | null) {
+    return this.userModel.findByIdAndUpdate(id, { refreshToken }, { new: true });
   }
 }

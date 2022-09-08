@@ -4,6 +4,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DirectiveLocation, GraphQLDirective } from 'graphql';
+import { ObjectId } from 'mongodb';
 
 import configuration from '../config/configuration';
 import { directiveCombiner } from './common/directives/directive-combiner';
@@ -54,7 +55,9 @@ import { ProjectModule } from './project/project.module';
       definitions: {
         customScalarTypeMapping: {
           DateTime: 'Date',
+          ObjectId,
         },
+        additionalHeader: "import { ObjectId } from 'mongodb'",
       },
     }),
     MongooseModule.forRootAsync({

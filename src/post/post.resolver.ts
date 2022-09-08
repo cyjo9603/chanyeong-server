@@ -1,11 +1,13 @@
-import { Resolver, Query, Args, Int, Directive, Mutation, ID } from '@nestjs/graphql';
+import { Resolver, Query, Args, Int, Directive, Mutation } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { FilterQuery, SortOrder } from 'mongoose';
+import { ObjectId } from 'mongodb';
 
 import { InputFilter } from '@/common/schema/filter-graphql.schema';
 import { InputSort } from '@/common/schema/sort-graphql.schema';
 import { AllowKeysValidationPipe } from '@/common/pipes/allow-keys.validate.pipe';
 import { AccessJwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
+import { ObjectIdScalar } from '@/common/scalars/mongo-object-id.scalar';
 
 import { Post, PostConnection, PostDocument } from './schema/post.schema';
 import { PostRepository } from './post.repository';
@@ -56,13 +58,13 @@ export class PostResolver {
 
   @UseGuards(AccessJwtAuthGuard)
   @Mutation(() => Post)
-  async updatePost(@Args('id', { type: () => ID }) id: string, @Args('updatePostDto') updatePostDto: UpdatePostDto) {
+  async updatePost(@Args('id', { type: () => ObjectIdScalar }) id: ObjectId, @Args('updatePostDto') updatePostDto: UpdatePostDto) {
     return this.postRepository.updateOneById(id, updatePostDto);
   }
 
   @UseGuards(AccessJwtAuthGuard)
   @Mutation(() => Post)
-  async deletePost(@Args('id', { type: () => ID }) id: string) {
+  async deletePost(@Args('id', { type: () => ObjectIdScalar }) id: ObjectId) {
     return this.postRepository.deleteOneById(id);
   }
 }

@@ -1,10 +1,12 @@
-import { Field, ID, Int, ObjectType, InputType, registerEnumType } from '@nestjs/graphql';
+import { Field, Int, ObjectType, InputType, registerEnumType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { MaxLength, IsUrl, IsOptional } from 'class-validator';
 import { Document, Schema as MongooseSchema } from 'mongoose';
+import { ObjectId } from 'mongodb';
 
 import { connectionGenerator } from '@/common/schema/connection.schema';
 import { DateTimeScalar } from '@/common/scalars/date-time.scalar';
+import { ObjectIdScalar } from '@/common/scalars/mongo-object-id.scalar';
 
 export enum ProjectType {
   PERSONAL = 'PERSONAL',
@@ -19,8 +21,8 @@ export type ProjectDocument = Project & Document;
 @ObjectType()
 @Schema({ timestamps: true })
 export class Project {
-  @Field(() => ID)
-  id: string;
+  @Field(() => ObjectIdScalar)
+  id: ObjectId;
 
   @Field(() => ProjectType)
   @Prop({ type: String, required: true, enum: [ProjectType.PERSONAL, ProjectType.GROUP] })
@@ -72,9 +74,9 @@ export class Project {
   @Prop({})
   titleImage?: string;
 
-  @Field(() => [ID], { nullable: true })
+  @Field(() => [ObjectIdScalar], { nullable: true })
   @Prop({ type: [MongooseSchema.Types.ObjectId] })
-  techStackIds?: string[];
+  techStackIds?: ObjectId[];
 
   @Field(() => DateTimeScalar, { nullable: true })
   @Prop({ index: true })

@@ -1,9 +1,11 @@
-import { Directive, Resolver, Query, Args, Int, Mutation, ID } from '@nestjs/graphql';
+import { Directive, Resolver, Query, Args, Int, Mutation } from '@nestjs/graphql';
 import { FilterQuery } from 'mongoose';
+import { ObjectId } from 'mongodb';
 
 import { InputFilter } from '@/common/schema/filter-graphql.schema';
 import { InputSort, GraphqlSort } from '@/common/schema/sort-graphql.schema';
 import { AllowKeysValidationPipe } from '@/common/pipes/allow-keys.validate.pipe';
+import { ObjectIdScalar } from '@/common/scalars/mongo-object-id.scalar';
 
 import { TechStack, TechStackConnection, TechStackDocument } from './schema/tech-stack.schema';
 import { TechStackRepository } from './tech-stack.repository';
@@ -47,13 +49,16 @@ export class TechStackResolver {
 
   @UseGuards(AccessJwtAuthGuard)
   @Mutation(() => TechStack)
-  async updateTechStack(@Args('id', { type: () => ID }) id: string, @Args('upsertTechStackDto') upsertTechStackDto: UpsertTechStackDto) {
+  async updateTechStack(
+    @Args('id', { type: () => ObjectIdScalar }) id: ObjectId,
+    @Args('upsertTechStackDto') upsertTechStackDto: UpsertTechStackDto,
+  ) {
     return this.techStackRepository.updateOneById(id, upsertTechStackDto);
   }
 
   @UseGuards(AccessJwtAuthGuard)
   @Mutation(() => TechStack)
-  async deleteTechStack(@Args('id', { type: () => ID }) id: string) {
+  async deleteTechStack(@Args('id', { type: () => ObjectIdScalar }) id: ObjectId) {
     return this.techStackRepository.deleteOneById(id);
   }
 }
