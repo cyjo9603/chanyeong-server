@@ -32,6 +32,7 @@ export class Project {
   @Prop({ index: true })
   numId: number;
 
+  @IsOptional()
   @MaxLength(30)
   @Field(() => String, { nullable: true })
   @Prop()
@@ -54,15 +55,18 @@ export class Project {
   @Prop({ required: true })
   startedAt: Date;
 
+  @IsOptional()
   @Field(() => DateTimeScalar, { nullable: true })
   @Prop()
   endedAt?: Date;
 
+  @IsOptional()
   @MaxLength(200)
   @Field(() => String, { nullable: true })
   @Prop()
   githubAddr?: string;
 
+  @IsOptional()
   @Field(() => Int, { nullable: true })
   @Prop()
   contribution?: number;
@@ -74,6 +78,7 @@ export class Project {
   @Prop({})
   titleImage?: string;
 
+  @IsOptional()
   @Field(() => [ObjectIdScalar], { nullable: true })
   @Prop({ type: [MongooseSchema.Types.ObjectId] })
   techStackIds?: ObjectId[];
