@@ -21,6 +21,7 @@ import { CommonModule } from './common/common.module';
 import { TechStackModule } from './tech-stack/tech-stack.module';
 import { UploadModule } from './upload/upload.module';
 import { ProjectModule } from './project/project.module';
+import { ExperienceModule } from './experience/experience.module';
 
 @Module({
   imports: [
@@ -75,6 +76,7 @@ import { ProjectModule } from './project/project.module';
     TechStackModule,
     UploadModule,
     ProjectModule,
+    ExperienceModule,
   ],
   controllers: [AppController],
   providers: [AppService, SampleResolver],
