@@ -15,4 +15,5 @@ export class UpsertProjectDto extends PickType(Project, [
   'titleImage',
   'contribution',
   'techStackIds',
+  'pickedAt',
 ] as const) {}
