@@ -6,7 +6,7 @@ import { join } from 'path';
 const prod = process.env.NODE_ENV === 'production';
 
 const YAML_CONFIG_FILENAME = 'config.yml';
-const ENV_CONFIG_FILENAME = prod ? 'config.production.yaml' : 'config.local.yml';
+const ENV_CONFIG_FILENAME = prod ? 'config.production.yml' : 'config.local.yml';
 
 export default () => {
   const defaultConfig = yaml.load(readFileSync(join(__dirname, YAML_CONFIG_FILENAME), 'utf8')) as Record<string, any>;

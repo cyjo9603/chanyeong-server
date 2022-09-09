@@ -3,7 +3,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import helmet from 'helmet';
 import * as compression from 'compression';
-import hpp from 'hpp';
+import * as hpp from 'hpp';
 import * as cookieParser from 'cookie-parser';
 import { graphqlUploadExpress } from 'graphql-upload';
 
