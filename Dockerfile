@@ -19,7 +19,8 @@ ENV NODE_ENV production
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/pm2.yml ./pm2.yml
 
 EXPOSE 4000
 
-CMD ["yarn", "start:prod"]
+CMD [ "yarn", "start:prod" ]

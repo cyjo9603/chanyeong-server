@@ -1,0 +1,12 @@
+apps:  
+  - script: dist/src/main.js
+    name: blog-api
+    kill_timeout: 8000
+    error_file: /dev/null
+    out_file: /dev/null
+    instances: 2
+    exec_mode: cluster
+    listen_timeout: 50000
+    env_production:
+      NODE_ENV: production
+      node_args: --max_old_space_size=4096

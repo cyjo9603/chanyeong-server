@@ -1,0 +1,87 @@
+name: chanyeong-blog-server-deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      log:
+        description: 'deploy log'
+
+env:
+  DOCKER_CONTAINER: blog-api
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v3
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install the project dependencies
+        run: yarn install
+
+      - name: Add config
+        run: echo "${{secrets.PRODUCTION_CONFIG}}" >> config/config.production.yml
+
+      - name: Docker Setup QEMU
+        uses: docker/setup-qemu-action@v1.2.0
+
+      - name: Docker Setup Buildx
+        uses: docker/setup-buildx-action@v1.6.0
+
+      - name: Login to Docker Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{secrets.DOCKER_REGISTRY_URL}}
+          username: ${{secrets.DOCKER_REGISTRY_ACCESS_KEY}}
+          password: ${{secrets.DOCKER_REGISTRY_SECRET_KEY}}
+
+      - name: Docker build & push to push
+        run: docker buildx build --platform linux/arm64/v8 -t ${{secrets.DOCKER_REGISTRY_URL}}/${{secrets.DOCKER_REPO}}:${{ github.sha }} -t ${{secrets.DOCKER_REGISTRY_URL}}/${{secrets.DOCKER_REPO}}:latest --push .
+          # docker push ${{secrets.DOCKER_REGISTRY_URL}}/${{secrets.DOCKER_REPO}}:${{ github.sha }}
+          # docker push ${{secrets.DOCKER_REGISTRY_URL}}/${{secrets.DOCKER_REPO}}:latest
+
+  deploy:
+    needs: build
+    name: Deploy
+    runs-on: [api]
+    steps:
+      - name: Login to Docker Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{secrets.DOCKER_REGISTRY_URL}}
+          username: ${{secrets.DOCKER_REGISTRY_ACCESS_KEY}}
+          password: ${{secrets.DOCKER_REGISTRY_SECRET_KEY}}
+
+      - name: Docker run
+        run: |
+          CONTAINERS=$(docker ps -qa)
+          if [ -z "$CONTAINERS" ];
+          then
+            echo "container not exist"
+          else
+            docker rm -f $(docker ps -q -a)
+          fi
+          docker pull ${{secrets.DOCKER_REGISTRY_URL}}/${{secrets.DOCKER_REPO}}:${{ github.sha }}
+          docker run -dit -p 4001:4000 --name $DOCKER_CONTAINER ${{secrets.DOCKER_REGISTRY_URL}}/${{secrets.DOCKER_REPO}}:${{ github.sha }}
