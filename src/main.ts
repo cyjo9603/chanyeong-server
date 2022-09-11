@@ -8,6 +8,7 @@ import * as cookieParser from 'cookie-parser';
 import { graphqlUploadExpress } from 'graphql-upload';
 
 import { AppModule } from './app.module';
+import { SentryFilter } from './sentry/sentry.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -28,6 +29,7 @@ async function bootstrap() {
     app.use(helmet());
   }
 
+  app.useGlobalFilters(new SentryFilter(app.getHttpAdapter()));
   app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(configService.get('port'), '0.0.0.0');
