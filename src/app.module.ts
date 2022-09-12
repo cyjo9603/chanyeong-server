@@ -75,6 +75,10 @@ import { ExperienceModule } from './experience/experience.module';
         },
         additionalHeader: "import { ObjectId } from 'mongodb'",
       },
+      cors: {
+        credentials: true,
+        origin: process.env.NODE_ENV !== 'production' ? /chanyeong\.com$/ : true,
+      },
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
