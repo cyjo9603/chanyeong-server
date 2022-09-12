@@ -1,6 +1,9 @@
-import { Resolver, Mutation, Directive, Args } from '@nestjs/graphql';
+import { Resolver, Mutation, Directive, Args, Query, Context } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
+
 import { DeactivateGuard } from '@/common/guard/deactivated.guard';
+import { AccessJwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
+import { ApolloContext } from '@/common/types/apollo-context';
 
 import { UserDto } from './dto/user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -21,5 +24,11 @@ export class UserResolver {
     const user = await this.userRepository.create(createUserDto);
 
     return user;
+  }
+
+  @UseGuards(AccessJwtAuthGuard)
+  @Query(() => UserDto)
+  async me(@Context() { req }: ApolloContext): Promise<UserDto> {
+    return this.userRepository.findById(req.user.id);
   }
 }
