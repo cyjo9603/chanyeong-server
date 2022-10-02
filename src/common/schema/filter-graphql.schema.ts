@@ -12,6 +12,7 @@ export enum FilterOperator {
   GTE = '$gte',
   LT = '$lt',
   LTE = '$lte',
+  EXISTS = '$exists',
 }
 
 registerEnumType(FilterOperator, { name: 'FilterOperator' });
